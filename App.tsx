@@ -128,6 +128,7 @@ const App: React.FC = () => {
 
 　const [isAdmin, setIsAdmin] = useState(false);
 　const [adminOpen, setAdminOpen] = useState(false);
+}
 
 useEffect(() => {
   const checkAdmin = async () => {
@@ -540,11 +541,13 @@ useEffect(() => {
           </button>
         </div>
       );
+  }
     }
 
 switch (currentView) {
   case ViewState.PROJECT_FLOW:
-    return (
+    
+}return (
       <ProjectFlowDisplay
         tasks={tasks}
         projectGoal={projectGoal}
