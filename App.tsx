@@ -128,9 +128,9 @@ const App: React.FC = () => {
 
 　const [isAdmin, setIsAdmin] = useState(false);
 　const [adminOpen, setAdminOpen] = useState(false);
-}
 
-useEffect(() => {
+
+  useEffect(() => {
   const checkAdmin = async () => {
     const { data } = await supabase.auth.getUser();
     if (data?.user?.user_metadata?.admin === true) {
