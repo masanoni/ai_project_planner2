@@ -133,7 +133,10 @@ const App: React.FC = () => {
   useEffect(() => {
   const checkAdmin = async () => {
     const { data } = await supabase.auth.getUser();
-    if (data?.user?.user_metadata?.admin === true) {
+    // 管理者メールアドレスまたはuser_metadataで判定
+    if (data?.user?.email === 'administrator@example.com' || 
+        data?.user?.user_metadata?.admin === true ||
+        data?.user?.app_metadata?.admin === true) {
       setIsAdmin(true);
     }
   };
