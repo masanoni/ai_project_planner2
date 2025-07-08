@@ -544,8 +544,6 @@ useEffect(() => {
   }
     }
 
-const App = () => {
-  // ...useState, useEffect, 各種関数などは省略...
 
   const renderContent = () => {
     switch (currentView) {
