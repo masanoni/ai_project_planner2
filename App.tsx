@@ -541,11 +541,8 @@ useEffect(() => {
           </button>
         </div>
       );
-  }
     }
 
-
-  const renderContent = () => {
     switch (currentView) {
       case ViewState.PROJECT_FLOW:
         return (
