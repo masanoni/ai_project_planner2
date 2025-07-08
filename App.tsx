@@ -544,134 +544,137 @@ useEffect(() => {
   }
     }
 
-switch (currentView) {
-  case ViewState.PROJECT_FLOW:
-    
-}return (
-      <ProjectFlowDisplay
-        tasks={tasks}
-        projectGoal={projectGoal}
-        targetDate={targetDate}
-        onSelectTask={handleSelectTask}
-        onUpdateTaskExtendedDetails={() => {}} // This is handled by opening the modal
-        onUpdateTaskPosition={handleUpdateTaskPosition}
-        onStartNewProject={handleStartNewProject}
-        onExportProject={handleExportProject}
-        onAddTask={() => setIsAddTaskModalOpen(true)}
-        onRemoveTask={handleRemoveTask}
-        onUpdateTaskStatus={handleUpdateTaskStatus}
-        onImportSingleTask={() => {}} // Placeholder for now
-        onAutoLayout={() => setTasksWithHistory(prev => autoLayoutTasks([...prev]))}
-        onUndo={handleUndo}
-        canUndo={history.length > 0}
-        onRedo={handleRedo}
-        canRedo={redoHistory.length > 0}
-        generateUniqueId={generateUniqueId}
-        onUpdateTaskConnections={handleUpdateTaskConnections}
-        ganttData={ganttData}
-        setGanttData={setGanttData}
-        onCustomReportGenerated={handleCustomReportGenerated}
-        onClearApiKey={handleClearApiKey}
-        onOpenProjectList={() => setIsProjectListOpen(true)}
-        onLogout={handleLogout}
-        currentProjectId={currentProjectId}
-        onSaveProject={saveCurrentProject}
-      />
-    );
+const App = () => {
+  // ...useState, useEffect, 各種関数などは省略...
 
-  case ViewState.TASK_DETAIL:
-    return (
-      selectedTask && (
-        <TaskDetailModal
-          task={selectedTask}
-          onClose={handleCloseTaskDetail}
-          onUpdateTaskCoreInfo={handleUpdateTaskCoreInfo}
-          onUpdateExtendedDetails={handleUpdateTaskExtendedDetails}
-          generateUniqueId={generateUniqueId}
-          projectGoal={projectGoal}
-          targetDate={targetDate}
-        />
-      )
-    );
+  const renderContent = () => {
+    switch (currentView) {
+      case ViewState.PROJECT_FLOW:
+        return (
+          <ProjectFlowDisplay
+            tasks={tasks}
+            projectGoal={projectGoal}
+            targetDate={targetDate}
+            onSelectTask={handleSelectTask}
+            onUpdateTaskExtendedDetails={() => {}}
+            onUpdateTaskPosition={handleUpdateTaskPosition}
+            onStartNewProject={handleStartNewProject}
+            onExportProject={handleExportProject}
+            onAddTask={() => setIsAddTaskModalOpen(true)}
+            onRemoveTask={handleRemoveTask}
+            onUpdateTaskStatus={handleUpdateTaskStatus}
+            onImportSingleTask={() => {}}
+            onAutoLayout={() => setTasksWithHistory(prev => autoLayoutTasks([...prev]))}
+            onUndo={handleUndo}
+            canUndo={history.length > 0}
+            onRedo={handleRedo}
+            canRedo={redoHistory.length > 0}
+            generateUniqueId={generateUniqueId}
+            onUpdateTaskConnections={handleUpdateTaskConnections}
+            ganttData={ganttData}
+            setGanttData={setGanttData}
+            onCustomReportGenerated={handleCustomReportGenerated}
+            onClearApiKey={handleClearApiKey}
+            onOpenProjectList={() => setIsProjectListOpen(true)}
+            onLogout={handleLogout}
+            currentProjectId={currentProjectId}
+            onSaveProject={saveCurrentProject}
+          />
+        );
 
-  case ViewState.INPUT_FORM:
-  default:
-    return (
-      <ProjectInputForm
-        onSubmit={handleSubmit}
-        isLoading={isLoadingPlan}
-        onImportProject={handleImportProject}
-        onLoadTemplate={handleLoadTemplate}
-        initialGoal={projectGoal}
-        initialDate={targetDate}
-        onOpenProjectList={() => setIsProjectListOpen(true)}
-        onLogout={handleLogout}
-        user={user}
-      />
-    );
-}
+      case ViewState.TASK_DETAIL:
+        return (
+          selectedTask && (
+            <TaskDetailModal
+              task={selectedTask}
+              onClose={handleCloseTaskDetail}
+              onUpdateTaskCoreInfo={handleUpdateTaskCoreInfo}
+              onUpdateExtendedDetails={handleUpdateTaskExtendedDetails}
+              generateUniqueId={generateUniqueId}
+              projectGoal={projectGoal}
+              targetDate={targetDate}
+            />
+          )
+        );
 
-    
+      case ViewState.INPUT_FORM:
+      default:
+        return (
+          <ProjectInputForm
+            onSubmit={handleSubmit}
+            isLoading={isLoadingPlan}
+            onImportProject={handleImportProject}
+            onLoadTemplate={handleLoadTemplate}
+            initialGoal={projectGoal}
+            initialDate={targetDate}
+            onOpenProjectList={() => setIsProjectListOpen(true)}
+            onLogout={handleLogout}
+            user={user}
+          />
+        );
+    }
   };
 
-return (
-  <div className="h-full w-full relative">
-    {/* ✅ 管理者用トグルボタン */}
-    {isAdmin && (
-      <button
-        onClick={() => setAdminOpen(!adminOpen)}
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          padding: '8px 12px',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: 4,
-          cursor: 'pointer',
-          zIndex: 1000,
-        }}
-      >
-        {adminOpen ? '管理画面を閉じる' : '管理画面を開く'}
-      </button>
-    )}
+  return (
+    <div className="h-full w-full relative">
+      {/* 管理者用トグルボタン */}
+      {isAdmin && (
+        <button
+          onClick={() => setAdminOpen(!adminOpen)}
+          style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            padding: '8px 12px',
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: 4,
+            cursor: 'pointer',
+            zIndex: 1000,
+          }}
+        >
+          {adminOpen ? '管理画面を閉じる' : '管理画面を開く'}
+        </button>
+      )}
 
-    {/* ✅ 管理画面表示 */}
-    {adminOpen && <AdminDashboard />}
+      {/* 管理画面表示 */}
+      {adminOpen && <AdminDashboard />}
 
-    {/* ✅ 既存の通常UI */}
-    {renderContent()}
+      {/* メインビューの切り替え */}
+      {renderContent()}
 
-    {isAddTaskModalOpen && (
-      <AddTaskModal
-        onClose={() => setIsAddTaskModalOpen(false)}
-        onSubmit={handleAddTaskFromModal}
-      />
-    )}
+      {/* モーダル各種 */}
+      {isAddTaskModalOpen && (
+        <AddTaskModal
+          onClose={() => setIsAddTaskModalOpen(false)}
+          onSubmit={handleAddTaskFromModal}
+        />
+      )}
 
-    {isProjectListOpen && (
-      <ProjectListModal
-        isOpen={isProjectListOpen}
-        onClose={() => setIsProjectListOpen(false)}
-        onSelectProject={handleSelectProject}
-        onCreateNew={handleCreateNewProject}
-      />
-    )}
+      {isProjectListOpen && (
+        <ProjectListModal
+          isOpen={isProjectListOpen}
+          onClose={() => setIsProjectListOpen(false)}
+          onSelectProject={handleSelectProject}
+          onCreateNew={handleCreateNewProject}
+        />
+      )}
 
-    {customReportDeck && (
-      <SlideEditorView
-        tasks={tasks}
-        initialDeck={customReportDeck}
-        onSave={(deck) => setCustomReportDeck(deck)}
-        onClose={() => setCustomReportDeck(null)}
-        projectGoal={projectGoal}
-        targetDate={targetDate}
-        reportScope="project"
-        generateUniqueId={generateUniqueId}
-      />
-    )}
-  </div>
-);
+      {customReportDeck && (
+        <SlideEditorView
+          tasks={tasks}
+          initialDeck={customReportDeck}
+          onSave={(deck) => setCustomReportDeck(deck)}
+          onClose={() => setCustomReportDeck(null)}
+          projectGoal={projectGoal}
+          targetDate={targetDate}
+          reportScope="project"
+          generateUniqueId={generateUniqueId}
+        />
+      )}
+    </div>
+  );
+};
 
 export default App;
